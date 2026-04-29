@@ -1,0 +1,33 @@
+import { IsNumber } from 'class-validator';
+import { Column, Entity, Index, PrimaryColumn } from "typeorm";
+
+@Entity()
+@Index(['userId', 'taken', 'timestamp', 'latitude', 'longitude'])
+export class L {
+
+    @PrimaryColumn({ comment: 'User identifier, used as primary key for real-time location tracking' })
+    @IsNumber()
+    userId: number;
+
+    @Column('smallint', { default: 0, comment: 'Flag indicating whether the location has been consumed/processed (0=available, 1=taken)' })
+    @Index()
+    taken: number;
+
+    // Latitude: represents the north-south position of a point on Earth
+    @Column({ default: 0, type: 'decimal', precision: 10, scale: 6, comment: 'Latitude coordinate of the user current position' })
+    latitude: number;
+
+    // Longitude: represents the east-west position of a point on Earth
+    @Column({ default: 0, type: 'decimal', precision: 10, scale: 6, comment: 'Longitude coordinate of the user current position' })
+    longitude: number;
+
+    // Heading: direction the device is moving, in degrees (0-360)
+    @Column({ default: 0, type: 'decimal', precision: 10, scale: 2, comment: 'Direction of movement in degrees (0-360, where 0=North)' })
+    heading: number;
+
+    @Column({ type: 'text', comment: 'Encoded polyline string representing the recent movement path of the user' })
+    polyline: string;
+
+    @Column({ type: "timestamp", default: () => "now()", comment: 'Timestamp when this location snapshot was recorded' })
+    timestamp: Date;
+}

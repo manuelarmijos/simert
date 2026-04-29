@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  db:
+    image: postgis/postgis:15-3.3
+    restart: always
+    ports:
+      - "${DB_PORT}:5432"
+    environment:
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    container_name: pay
+    volumes:
+      - /home/juanpa_nodejs/db/${DB_NAME}/postgresql/data:/var/lib/postgresql/data
+      #- ./postgres:/var/lib/postgresql/data

@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run:*)",
+      "Bash(xargs kill:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm install *)",
+      "Bash(npm list *)",
+      "Bash(xargs sed *)",
+      "Bash(node /tmp/apply_swagger_tags.mjs)",
+      "Bash(grep -r \"\\\\`[a-zA-Z_][a-zA-Z0-9_]*\\\\`\" /Users/macbookpro/repositorios/Nest/clipp/simertLoja/parking_simert/src --include=\"*.ts\")",
+      "Bash(grep -rn '`.*`' /Users/macbookpro/repositorios/Nest/clipp/simertLoja/parking_simert/src --include=\"*.ts\")",
+      "Bash(grep -rn '\\\\`[a-zA-Z0-9_.-]*\\\\`' /Users/macbookpro/repositorios/Nest/clipp/simertLoja/parking_simert/src --include=\"*.ts\")",
+      "Bash(grep *)",
+      "Bash(chmod +x /tmp/extract_endpoints.sh)",
+      "Bash(/tmp/extract_endpoints.sh)",
+      "Bash(xargs ls *)"
+    ]
+  }
+}

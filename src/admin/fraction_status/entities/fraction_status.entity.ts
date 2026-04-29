@@ -1,0 +1,37 @@
+import { Fraction } from "src/admin/fraction/entities/fraction.entity";
+import { Status } from "src/admin/status/entities/status.entity";
+import { StatusMoment } from "src/common/glob/status/status_moment";
+import { Column, Entity, Index, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+
+@Entity()
+@Index(['fraction', 'status'])
+export class FractionStatus {
+
+    @PrimaryGeneratedColumn('increment')
+    id: number;
+
+    @Column('smallint', { unsigned: true, default: StatusMoment.REQUESTED, comment: 'Delivery moment of this status: references StatusMoment enum (REQUESTED, NOTIFIED, etc.)' })
+    moment: number;
+
+    @Index()
+    @ManyToOne(
+        () => Fraction,
+        (fraction) => fraction.fractions,
+        { cascade: false, eager: false, onDelete: "NO ACTION", }
+    )
+    fraction: Fraction;
+
+    @Index()
+    @ManyToOne(
+        () => Status,
+        (status) => status.fractions,
+        { cascade: false, eager: false, onDelete: "NO ACTION", }
+    )
+    status: Status;
+
+    @Column({ type: "timestamp", default: () => "now()", comment: 'Timestamp when the record was created' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: 'timestamp', nullable: true, comment: 'Timestamp of the last update. Null on creation, auto-set on every update' })
+    updatedAt: Date;
+}

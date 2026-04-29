@@ -1,0 +1,68 @@
+import { Body, Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthWithKeycloak, GetUser } from 'src/auth/decorators';
+import { JwtPayload } from 'src/auth/interfaces';
+
+import { CreateScheduleDto } from './dto/create-schedule.dto';
+import { UpdateScheduleDto } from './dto/update-schedule.dto';
+import { ScheduleService } from './schedule.service';
+@ApiTags('Admin - Schedule')
+@ApiBearerAuth('keycloak')
+@Controller('admin/schedule')
+export class ScheduleController {
+  constructor(private readonly scheduleService: ScheduleService) { }
+
+  @ApiOperation({ summary: 'Create a new parking schedule for a block' })
+  // @Auth()
+  @AuthWithKeycloak()
+  @Post(':userId/:idDevice/:version')
+  create(
+    @GetUser() user: JwtPayload,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('idDevice', ParseUUIDPipe) idDevice: string,
+    @Param('version', ParseIntPipe) version: number,
+    @Body() createScheduleDto: CreateScheduleDto,
+  ) {
+    return this.scheduleService.create(userId, createScheduleDto);
+  }
+
+  @ApiOperation({ summary: 'List all schedules for a given block id' })
+  // @Auth()
+  @AuthWithKeycloak()
+  @Get('by-block/:id/:userId/:idDevice/:version')
+  findAllScheduleByBlock(
+    @GetUser() user: JwtPayload,
+    @Param('id', ParseIntPipe) id: number
+  ) {
+    return this.scheduleService.findAllScheduleByBlock(id);
+  }
+
+  @ApiOperation({ summary: 'Activate or deactivate a schedule by id' })
+  // @Auth()
+  @AuthWithKeycloak()
+  @Patch('active/:id/:userId/:idDevice/:version')
+  updateActive(
+    @GetUser() user: JwtPayload,
+    @Param('id', ParseIntPipe) id: number,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('idDevice', ParseUUIDPipe) idDevice: string,
+    @Param('version', ParseIntPipe) version: number,
+    @Body() updateScheduleDto: UpdateScheduleDto
+  ) {
+    return this.scheduleService.updateActive(userId, id, updateScheduleDto);
+  }
+
+  @ApiOperation({ summary: 'Update schedule properties (time ranges, days, etc.)' })
+  // @Auth()
+  @AuthWithKeycloak()
+  @Patch(':userId/:idDevice/:version')
+  update(
+    @GetUser() user: JwtPayload,
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('idDevice', ParseUUIDPipe) idDevice: string,
+    @Param('version', ParseIntPipe) version: number,
+    @Body() updateScheduleDto: UpdateScheduleDto
+  ) {
+    return this.scheduleService.update(userId, updateScheduleDto);
+  }
+}

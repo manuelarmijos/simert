@@ -1,0 +1,52 @@
+import { Controller, Get, Param, ParseIntPipe, ParseUUIDPipe, Query } from '@nestjs/common';
+import { ApiBearerAuth, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { FilterDto } from 'src/common/dto/filter.dto';
+
+import { PhysicsService } from './physics.service';
+import { AuthWithKeycloak } from 'src/auth/decorators';
+import { TypeRol } from 'src/common/glob/type/type_rol';
+@ApiTags('Admin - Physics')
+@ApiBearerAuth('keycloak')
+@Controller('admin/physic')
+export class PhysicsController {
+  constructor(private readonly physicsService: PhysicsService) { }
+
+  @ApiOperation({ summary: 'List physical card records with optional filters (admin only)' })
+  @AuthWithKeycloak(TypeRol.ADMIN)
+  @Get(':userId/:idDevice/:version')
+  findAll(
+    // @GetUser() user: JwtPayload,
+    @Param('userId', ParseIntPipe) _userId: number,
+    @Param('idDevice', ParseUUIDPipe) _idDevice: string,
+    @Param('version', ParseIntPipe) _version: number,
+    @Query() filterDto: FilterDto
+  ) {
+    return this.physicsService.findAll(filterDto);
+  }
+
+  @ApiOperation({ summary: 'Count total physical card records matching filters (admin only)' })
+  @AuthWithKeycloak(TypeRol.ADMIN)
+  @Get('total/:userId/:idDevice/:version')
+  findAllTotal(
+    // @GetUser() user: JwtPayload,
+    @Param('userId', ParseIntPipe) _userId: number,
+    @Param('idDevice', ParseUUIDPipe) _idDevice: string,
+    @Param('version', ParseIntPipe) _version: number,
+    @Query() filterDto: FilterDto
+  ) {
+    return this.physicsService.findAllTotal(filterDto);
+  }
+
+  @ApiOperation({ summary: 'Count unique physical card users matching filters (admin only)' })
+  @AuthWithKeycloak(TypeRol.ADMIN)
+  @Get('total-unique/:userId/:idDevice/:version')
+  findAllTotalUnique(
+    // @GetUser() user: JwtPayload,
+    @Param('userId', ParseIntPipe) _userId: number,
+    @Param('idDevice', ParseUUIDPipe) _idDevice: string,
+    @Param('version', ParseIntPipe) _version: number,
+    @Query() filterDto: FilterDto
+  ) {
+    return this.physicsService.findAllTotalUnique(filterDto);
+  }
+}
