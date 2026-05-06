@@ -71,7 +71,7 @@ export class CheckService {
             SELECT id, "userId", "statusId", "blockId"
             FROM fraction
             WHERE
-            "statusId" = ${StatusFraction.NEXT_TO_EXCEEDED_TIME} OR ("statusId" < ${StatusFraction.EXCEEDED_TIME} AND NOW() + INTERVAL '3 MINUTE' > "departureDate")
+            "statusId" = ${StatusFraction.NEXT_TO_EXCEEDED_TIME} OR ("statusId" < ${StatusFraction.EXCEEDED_TIME} AND (NOW() AT TIME ZONE 'America/Guayaquil') + INTERVAL '3 MINUTE' > "departureDate")
             AND "statusId" < ${StatusFraction.SANCTIONED}
             AND "statusId" != ${StatusFraction.FINISHED_BY_OPERATOR}
           `);
@@ -91,7 +91,7 @@ export class CheckService {
                     const shouldUpdate = await this.fractionRepository
                         .createQueryBuilder()
                         .where({ id })
-                        .andWhere(`(NOW() - INTERVAL '1 MINUTE' > "departureDate")`)
+                        .andWhere(`((NOW() AT TIME ZONE 'America/Guayaquil') - INTERVAL '1 MINUTE' > "departureDate")`)
                         .getCount() > 0;
                     if (shouldUpdate) {
                         this.logger.log('EXCEDID CAMBIANDO ESTADO', id);
