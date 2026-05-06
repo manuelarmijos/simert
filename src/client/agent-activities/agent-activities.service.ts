@@ -67,6 +67,8 @@ export class AgentActivitiesService {
       const dataUpdateBlockOperator: UpdateBlockOperatorDto = {
         isInitialized: isInitializedSend,
         isFinalized: isFinalizedSend,
+        ...(isInitializedSend && !isInitialized && { dateInitialized: new Date() }),
+        ...(isFinalizedSend && !isFinalized && { dateFinalized: new Date() }),
       }
 
       const blockOperator = await this.blockOperatorRepository.preload({ id: createAgentActivityDto.blockOperatorId, ...dataUpdateBlockOperator });
