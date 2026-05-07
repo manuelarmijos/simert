@@ -37,7 +37,7 @@ export class SimertService {
     'status.id', 'slot.slot'
   ];
 
-  private readonly timeCacheBlockOperator = 60 * (Number(process.env.TIME_CACHE_BLOCK_OPERATOR) || 30);
+  private readonly timeCacheBlockOperator = 60 * (Number(process.env.TIME_CACHE_BLOCK_OPERATOR) || 5);
 
   constructor(
     @InjectRepository(Fraction)

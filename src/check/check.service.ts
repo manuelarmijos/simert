@@ -50,7 +50,7 @@ export class CheckService {
     private readonly codeEntryEmisionCard: string = process.env.CODE_ENTRY_EMISION_CARD || '573';
     private readonly intervalTransferCheck: number = parseInt(process.env.INTERVAL_TRANSFER_CHECK_MS || '') || 1000 * 60 * 1; //por defecto un minuto
     private readonly intervalValidateCheckbox: number = parseInt(process.env.INTERVAL_VALIDATE_CHECKBOX_MS || '') || 1000 * 60 * 2; //por defecto 3 minutos
-    private readonly timeCacheBlockOperator = 60 * (Number(process.env.TIME_CACHE_BLOCK_OPERATOR) || 30);
+    private readonly timeCacheBlockOperator = 60 * (Number(process.env.TIME_CACHE_BLOCK_OPERATOR) || 5);
 
     async onModuleInit() {
         this.logger.verbose('start call onModuleInit');
