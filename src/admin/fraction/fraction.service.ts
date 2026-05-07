@@ -373,10 +373,12 @@ export class FractionService {
       conditions.push(`f."userId" = ${addParam(userId)}`);
     }
 
-    if (typeSize === TypeSizeVehicle.VEHICLE || typeSize === TypeSizeVehicle.OTHERS || typeSize === TypeSizeVehicle.UNDEFINED) {
-      conditions.push(`f."plate" ~ '[0-9]$'`);
-    } else if (typeSize === TypeSizeVehicle.BIKE) {
-      conditions.push(`f."plate" ~ '[A-Za-z]$'`);
+    if (typeSize) {
+      if (typeSize === TypeSizeVehicle.VEHICLE || typeSize === TypeSizeVehicle.OTHERS || typeSize === TypeSizeVehicle.UNDEFINED) {
+        conditions.push(`f."plate" ~ '[0-9]$'`);
+      } else if (typeSize === TypeSizeVehicle.BIKE) {
+        conditions.push(`f."plate" ~ '[A-Za-z]$'`);
+      }
     }
 
     if (typeSlot) {
