@@ -119,7 +119,7 @@ export class IncidentService {
             amount: amount.toFixed(2),
             identificationNumber: identityCard,
             bondIds,
-            paymentDate: new Date().toISOString().split('T')[0],
+            paymentDate: new Date().toLocaleDateString('en-CA', { timeZone: 'America/Guayaquil' }),
             transactionId,
         };
 
