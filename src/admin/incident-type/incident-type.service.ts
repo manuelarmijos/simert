@@ -68,8 +68,8 @@ export class IncidentTypeService {
       it."name",
       it."description",
       it."isActivated",
-      it."createdAt",
-      it."updatedAt",
+      TO_CHAR(it."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
+      TO_CHAR(it."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "updatedAt",
       it."percentage",
       it."code"
     FROM ${table} it
