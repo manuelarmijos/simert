@@ -405,11 +405,15 @@ export class SimertService {
       const now = new Date();
       this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - buscando operadores desde DB: ${now}`);
       
-      blockOperators = await this.blockOperatorRepository.createQueryBuilder('bo')
+      const qb = this.blockOperatorRepository.createQueryBuilder('bo')
         .select(['bo.id', 'bo.userId'])
         .where('bo.blockId = :blockId', { blockId })
         .andWhere('bo.from <= :now AND bo.to >= :now', { now })
         .getMany();
+
+      this.logger.log(`[_notifyBlockOperators] query: ${qb.getSql()} -- params: ${JSON.stringify(qb.getParameters())}`);
+
+      blockOperators = await qb.getMany();
 
       this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - operadores desde DB: ${blockOperators.length}`);
 
