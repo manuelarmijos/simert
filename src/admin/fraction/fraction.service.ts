@@ -7,6 +7,7 @@ import { StatusFraction } from 'src/common/glob/status/status_fraction';
 import { Repository } from 'typeorm';
 
 import { Fraction } from './entities/fraction.entity';
+import { TypeSizeVehicle } from 'src/common/glob/type/type_size_vehicle';
 
 @Injectable()
 export class FractionService {
@@ -331,7 +332,8 @@ export class FractionService {
       timeZoneUTC,
       fromCreatedAt,
       toCreatedAt,
-      userId
+      userId,
+      typeSize,
     } = filterDto;
 
     const conditions: string[] = [];
@@ -369,6 +371,12 @@ export class FractionService {
 
     if (userId) {
       conditions.push(`f."userId" = ${addParam(userId)}`);
+    }
+
+    if (typeSize === TypeSizeVehicle.VEHICLE || typeSize === TypeSizeVehicle.OTHERS || typeSize === TypeSizeVehicle.UNDEFINED) {
+      conditions.push(`f."plate" ~ '[0-9]$'`);
+    } else if (typeSize === TypeSizeVehicle.BIKE) {
+      conditions.push(`f."plate" ~ '[A-Za-z]$'`);
     }
 
     if (typeSlot) {
