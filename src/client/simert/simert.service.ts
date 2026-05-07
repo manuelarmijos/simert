@@ -406,7 +406,7 @@ export class SimertService {
       this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - buscando operadores desde DB: ${now}`);
       
       const qb = this.blockOperatorRepository.createQueryBuilder('bo')
-        .select(['bo.id', 'bo.userId'])
+        .select(['bo.id', 'bo.userId', 'bo.from', 'bo.to'])
         .where('bo.blockId = :blockId', { blockId })
         .andWhere(`bo.from <= (NOW() AT TIME ZONE 'America/Guayaquil') AND bo.to >= (NOW() AT TIME ZONE 'America/Guayaquil')`);                
 
