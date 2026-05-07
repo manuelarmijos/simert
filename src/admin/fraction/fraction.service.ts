@@ -35,7 +35,10 @@ export class FractionService {
         const { parameters, conditions } = this.buildParametersConditions(filterDto);
         let query = `
         SELECT f.id, f."userId", f."transactionId", f.time, f."typeFraction",
-        f.plate, f.alias, f.tint, f.image, f."createdAt", f."departureDate", f."timeByBlock",
+        f.plate, f.alias, f.tint, f.image,
+        TO_CHAR(f."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
+        TO_CHAR(f."departureDate", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "departureDate",
+        f."timeByBlock",
         zone.id AS "zoneId", zone.name AS "zoneName",
         block.id AS "blockId", block.name AS "blockName",
         slot.id AS "slotId", slot.slot AS "slotName", slot."typeSlot"  as "typeSlot", 
