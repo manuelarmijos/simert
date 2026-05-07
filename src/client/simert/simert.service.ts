@@ -408,11 +408,12 @@ export class SimertService {
       const qb = this.blockOperatorRepository.createQueryBuilder('bo')
         .select(['bo.id', 'bo.userId'])
         .where('bo.blockId = :blockId', { blockId })
-        .andWhere('bo.from <= :now AND bo.to >= :now', { now });
+        .andWhere(`bo.from <= (NOW() AT TIME ZONE 'America/Guayaquil') AND bo.to >= (NOW() AT TIME ZONE 'America/Guayaquil'`);                              
 
       this.logger.log(`[_notifyBlockOperators] query: ${qb.getSql()} -- params: ${JSON.stringify(qb.getParameters())}`);
 
       blockOperators = await qb.getMany();
+      console.log(blockOperators)
 
       this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - operadores desde DB: ${blockOperators.length}`);
 
