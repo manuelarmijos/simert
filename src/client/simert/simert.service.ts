@@ -403,6 +403,8 @@ export class SimertService {
       this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - operadores desde cache: ${blockOperators.length}`);
     } else {
       const now = new Date();
+      this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - buscando operadores desde DB: ${now}`);
+      
       blockOperators = await this.blockOperatorRepository.createQueryBuilder('bo')
         .select(['bo.id', 'bo.userId'])
         .where('bo.blockId = :blockId', { blockId })

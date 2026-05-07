@@ -122,11 +122,10 @@ export class CheckService {
         if (blockOperators) {
             this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - operadores desde cache: ${blockOperators.length}`);
         } else {
-            const now = new Date();
             blockOperators = await this.blockOperatorRepository.createQueryBuilder('bo')
                 .select(['bo.id', 'bo.userId'])
                 .where('bo.blockId = :blockId', { blockId })
-                .andWhere('DATE(bo.from) <= DATE(:now) AND DATE(bo.to) >= DATE(:now)', { now })
+                .andWhere(`DATE(bo.from) <= DATE(NOW() AT TIME ZONE 'America/Guayaquil') AND DATE(bo.to) >= DATE(NOW() AT TIME ZONE 'America/Guayaquil')`)
                 .getMany();
 
             this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - operadores desde DB: ${blockOperators.length}`);
