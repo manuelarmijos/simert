@@ -37,7 +37,8 @@ export class RangeSalePointTransactionService {
             const { conditions, parameters } = this._buildConditionsAndParameters(filterDto);
             let queryInfo = `
                 SELECT 
-                    rspt.id, rspt."userIdSell", rspt."userIdBuy", rspt.amount, rspt."createdAt",
+                    rspt.id, rspt."userIdSell", rspt."userIdBuy", rspt.amount,
+                    TO_CHAR(rspt."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
                     rsp.id, rsp."available", rsp.sold, rsp.description,
                     sp.id, sp.title, sp."subTitle", sp.type, sp.mode
                 FROM ${tableName} rspt

@@ -58,8 +58,8 @@ export class SupportTicketService {
       st."message",
       st."status",
       st."emailClient",
-      st."createdAt",
-      st."updatedAt",
+      TO_CHAR(st."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
+      TO_CHAR(st."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "updatedAt",
       st."typeTicket"
     FROM ${table} st
     `;

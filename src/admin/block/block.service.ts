@@ -155,7 +155,10 @@ export class BlockService {
           b.id, b.name, b.acronym, b.color, b.lt, b.lg,
           ST_AsGeoJSON(b.geofence) AS geofence,
           b.neighborhood, b."timeLimit", b."timeGrace", b."timePerFraction",
-          b."isActivated", b."createdAt", b."updatedAt", b."zoneId", b.priority, b.description,
+          b."isActivated",
+          TO_CHAR(b."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
+          TO_CHAR(b."updatedAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "updatedAt",
+          b."zoneId", b.priority, b.description,
           z.name AS "nameZone", ST_AsGeoJSON(z.geofence) AS "geofenceZone", z.color AS "colorZone"
         FROM ${tableBlockSector} AS b
         INNER JOIN ${tableZone} AS z ON b."zoneId" = z.id

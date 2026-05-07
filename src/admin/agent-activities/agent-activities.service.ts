@@ -23,7 +23,9 @@ export class AgentActivitiesService {
       const { parameters, conditions } = this._buildParametersConditions(filterDto);
 
       let query = `
-        SELECT aa.id, aa."blockId", aa.type, aa."createdAt", aa."userId",
+        SELECT aa.id, aa."blockId", aa.type,
+        TO_CHAR(aa."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
+        aa."userId",
         aa."blockOperatorId",
         b.name AS "blockName"
         FROM agent_activity AS aa

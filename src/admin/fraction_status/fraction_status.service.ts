@@ -22,7 +22,10 @@ export class FractionStatusService {
             tableName = `${year}_${month}_fraction_status`;
           }
           const query =`
-            SELECT fs.id, fs.moment, fs."createdAt", s.name as statusLabel
+            SELECT fs.id,
+            fs.moment,
+            TO_CHAR(fs."createdAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS') AS "createdAt",
+            s.name as statusLabel
             FROM ${tableName} AS fs
             INNER JOIN status s ON s.id=fs."statusId" 
             WHERE fs."fractionId" =  ${fractionId} 
