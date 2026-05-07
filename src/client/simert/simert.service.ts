@@ -408,8 +408,7 @@ export class SimertService {
       const qb = this.blockOperatorRepository.createQueryBuilder('bo')
         .select(['bo.id', 'bo.userId'])
         .where('bo.blockId = :blockId', { blockId })
-        .andWhere('bo.from <= :now AND bo.to >= :now', { now })
-        .getMany();
+        .andWhere('bo.from <= :now AND bo.to >= :now', { now });
 
       this.logger.log(`[_notifyBlockOperators] query: ${qb.getSql()} -- params: ${JSON.stringify(qb.getParameters())}`);
 
