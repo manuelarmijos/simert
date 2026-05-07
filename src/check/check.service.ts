@@ -115,7 +115,7 @@ export class CheckService {
         const cacheKey = `BLOCK_OPERATORS:${blockId}`;
         const secondsCache = this.timeCacheBlockOperator;
 
-        this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - buscando operadores`);
+        this.logger.log(`[_notifyBlockOperators] blockId=${blockId} - buscando operadores _notifyBlockOperators`);
 
         let blockOperators: BlockOperator[] = await this.commonCacheService.get(cacheKey) as BlockOperator[];
 
