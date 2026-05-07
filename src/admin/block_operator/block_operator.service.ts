@@ -138,8 +138,8 @@ export class BlockOperatorService {
         .addSelect('zone.name', 'zoneName')
         .innerJoin('bo.block', 'block')
         .innerJoin('block.zone', 'zone')
-        .where('bo.from <= NOW()')
-        .andWhere('bo.to >= NOW()')
+        .where(`bo.from <= (NOW() AT TIME ZONE 'America/Guayaquil')`)
+        .andWhere(`bo.to >= (NOW() AT TIME ZONE 'America/Guayaquil')`)
         .andWhere('bo.isInitialized = :isInitialized', { isInitialized: true })
         .andWhere('bo.isFinalized = :isFinalized', { isFinalized: false });
 
