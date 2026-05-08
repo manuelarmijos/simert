@@ -403,8 +403,8 @@ export class OperatorService {
           'status',
           'fSlot.id',
         ])
-        .addSelect(`TO_CHAR(f."registerAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`, 'f_registerAt')
-        .addSelect(`TO_CHAR(f."departureDate" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`, 'f_departureDate')
+        .addSelect(`TO_CHAR(f."registerAt", 'YYYY-MM-DD"T"HH24:MI:SS.MS')`, 'f_registerAt')
+        .addSelect(`TO_CHAR(f."departureDate", 'YYYY-MM-DD"T"HH24:MI:SS.MS')`, 'f_departureDate')
         .innerJoin('f.status', 'status')
         .innerJoin('f.slot', 'fSlot')
         .where('f.blockId = :blockId', { blockId })
@@ -418,10 +418,16 @@ export class OperatorService {
         );
 
       // Ejecución en paralelo — ninguna espera a la otra
-      const [slots, fractions] = await Promise.all([
+      const [slots, fractionResult] = await Promise.all([
         slotQuery.take(limit).skip(offset).getMany(),
-        fractionQuery.getMany(),
+        fractionQuery.getRawAndEntities(),
       ]);
+
+      const fractions = fractionResult.entities.map((entity, i) => ({
+        ...entity,
+        registerAt: fractionResult.raw[i]?.f_registerAt ?? null,
+        departureDate: fractionResult.raw[i]?.f_departureDate ?? null,
+      }));
 
       // Merge con Map O(n)
       const fractionBySlotId = new Map(fractions.map(f => [f.slot.id, f]));
