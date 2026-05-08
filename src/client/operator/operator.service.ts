@@ -399,10 +399,12 @@ export class OperatorService {
 
       const fractionQuery = this.fractionRepository.createQueryBuilder('f')
         .select([
-          'f.id', 'f.typeFraction', 'f.userId', 'f.time', 'f.card', 'f.plate', 'f.tint', 'f.alias', 'f.image', 'f.transactionId', 'f.registerAt', 'f.departureDate', 'f.optionalData',
+          'f.id', 'f.typeFraction', 'f.userId', 'f.time', 'f.card', 'f.plate', 'f.tint', 'f.alias', 'f.image', 'f.transactionId', 'f.optionalData',
           'status',
           'fSlot.id',
         ])
+        .addSelect(`TO_CHAR(f."registerAt" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`, 'f_registerAt')
+        .addSelect(`TO_CHAR(f."departureDate" AT TIME ZONE 'UTC', 'YYYY-MM-DD"T"HH24:MI:SS"Z"')`, 'f_departureDate')
         .innerJoin('f.status', 'status')
         .innerJoin('f.slot', 'fSlot')
         .where('f.blockId = :blockId', { blockId })
